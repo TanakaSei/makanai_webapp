@@ -4,7 +4,7 @@
     <br>
     {{hoge}}
     <br>
-    日本語
+    <a-button type="primary">Primary Button</a-button>
 
 </template>
 <script>
