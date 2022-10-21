@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
+
+//リロード後アクセスできない問題解決のための仮処置
+Route::get('/', function () {
+    return view('app');
+});
+Route::get('/home', function () {
+    return view('app');
+});
+Route::get('/setting', function () {
+    return view('app');
+});
+Route::get('/lottery', function () {
+    return view('app');
+});
+//最終的にはここまで必ず削除すること
