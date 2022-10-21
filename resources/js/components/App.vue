@@ -9,7 +9,7 @@
                     <a-row type="flex" justify="end">
                         <a-col>
                             <a-menu v-model:selectedKeys="current" mode="horizontal" style="border: 0;" justify="end">
-                                <a-menu-item v-for="page in pageList" :key="page.name">
+                                <a-menu-item v-for="page in pageList" :key="page.name" style="background: #ebc320;">
                                     <router-link :to="{ name: page.name }">{{ page.content }}</router-link>
                                 </a-menu-item>
                             </a-menu>
@@ -18,6 +18,7 @@
                 </a-col>
             </a-row>
         </a-layout-header>
+        <router-view></router-view>
     </a-layout>
 </template>
 <script>
@@ -42,7 +43,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style>
-
-</style>
