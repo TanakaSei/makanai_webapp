@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('menuName');
+            $table->integer('categoryNumber');
             $table->timestamps();
         });
     }
