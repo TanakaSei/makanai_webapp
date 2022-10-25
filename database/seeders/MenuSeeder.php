@@ -26,9 +26,6 @@ class MenuSeeder extends Seeder
         );
         
         foreach ($memberSplFileObject as $key => $row) {
-            if ($key === 0) {
-                continue;
-            }
             DB::table('menus')->insert([
                 'menuName' => trim($row[0]),
                 'categoryNumber' => trim($row[1]),

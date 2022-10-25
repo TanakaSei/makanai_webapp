@@ -26,9 +26,6 @@ class CategorySeeder extends Seeder
         );
         
         foreach ($memberSplFileObject as $key => $row) {
-            if ($key === 0) {
-                continue;
-            }
             DB::table('categories')->insert([
                 'categoryName' => trim($row[0]),
                 'created_at' => now(),
