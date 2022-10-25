@@ -16,7 +16,18 @@
 </template>
    
 <script>
+import { defineComponent, reactive, ref } from 'vue';
+import axios from 'axios';
 
+export default defineComponent({
+    setup(_props, context) {
+        axios.get('api/menus')
+            .then(function (response) {
+                console.log(response.data);
+            });
+        return {}
+    }
+})
 </script>
 
 <style>
