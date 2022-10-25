@@ -13,7 +13,7 @@ class menuController extends Controller
 
     public function create(Request $request){
         $member = Menber::create([
-            'menu_name' => $request->menu_name,
+            'menuMame' => $request->menuName,
             'category' => $request->category,
         ]);
 
