@@ -28,7 +28,7 @@ export default defineComponent({
             },
         })
             .then(function (response) {
-                console.log(response);
+                console.log(response.data);
                 //console.log(response.data);
             });
         return {}
