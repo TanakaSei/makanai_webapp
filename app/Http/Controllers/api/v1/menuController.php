@@ -23,10 +23,18 @@ class menuController extends Controller
         else{
             $offset = 1;
         }
+        //文字検索
+        if(isset($request->seach_text)){
+            $seach_text = (string)$request->seach_text;
+        }
+        else{
+            $seach_text = '';
+        }
         $end_id = $offset+$contents_limit;
-        $menus = Category::join('menus',function($join)use($offset, $end_id){
+        $menus = Category::join('menus',function($join)use($offset, $end_id, $seach_text){
             $join->on('menus.category_id', '=','categories.id')
-            ->whereBetween('menus.id', [$offset, $end_id]);
+            ->whereBetween('menus.id', [$offset, $end_id])
+            ->where('menuName', 'like', "%$seach_text%");
         })->get();
         return response()->json($menus);
     }
