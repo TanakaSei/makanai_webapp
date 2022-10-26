@@ -3,6 +3,9 @@ public/hotの中身を
 http://0.0.0.0:5173 から http://localhost:5173 
 に書き変える 
 参考: https://qiita.com/Mi_tsu_ya/items/90129f44a3ee07b8ea57
+
+## hoge
+2022/10/26現在developingブランチにて作業中
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
