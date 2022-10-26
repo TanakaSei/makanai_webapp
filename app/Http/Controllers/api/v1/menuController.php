@@ -28,16 +28,6 @@ class menuController extends Controller
             $join->on('menus.category_id', '=','categories.id')
             ->whereBetween('menus.id', [$offset, $end_id]);
         })->get();
-        /*$category = Category::join('menus','menus.category_id', '=','categories.id')->get();
-        $h = $category->toArray();
-        $response_array = array(
-            'id'=>$menus->id,
-            'menu_name'=>$menus->menuName,
-            //'category_name'=>$category,
-        );
-        $response_json=json_encode($response_array, JSON_UNESCAPED_UNICODE);
-        //return response()->json($h[$menus->id]['categoryName']);
-        */
         return response()->json($menus);
     }
 }
