@@ -21,14 +21,15 @@ import axios from 'axios';
 
 export default defineComponent({
     setup(_props, context) {
-        const ROWS_PER_PAGE = 2; // 1ページあたりの表示行数
+        const ROWS_PER_PAGE = 10; // 1ページあたりの表示行数
         axios.get('api/menus', {
             params: {
+                offset: 5,
                 contents_limit: ROWS_PER_PAGE,
             },
         })
             .then(function (response) {
-                console.log(response.data);
+                console.log(response);
                 //console.log(response.data);
             });
         return {}
