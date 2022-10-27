@@ -34,13 +34,13 @@ class menuController extends Controller
         $menus = Category::join('menus',function($join)use($offset, $end_id, $seach_text, $contents_limit){
             $join->on('menus.category_id', '=','categories.id')
             ->when((!is_null($seach_text) && $seach_text != ''), function($q) use ($seach_text, $contents_limit){
-                $q->where('menuName', 'like', "%$seach_text%");
+                $q->where('menuName', 'like', "%$seach_text%")->orWhere('categoryName', 'like', "%$seach_text%");
             })
             ->when((is_null($seach_text) || $seach_text ==''), function($q) use ($offset, $end_id){
                 $q->whereBetween('menus.id', [$offset, $end_id]);        
             });
-        })->get()->take($contents_limit);
-        
+        })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
+
         return response()->json($menus);
     }
 }
