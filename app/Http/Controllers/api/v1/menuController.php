@@ -45,8 +45,12 @@ class menuController extends Controller
     }
 
     public function lottery(Request $request){
-        
-        $select_num = $request->select_num;
+        if(isset($request->select_num)){
+            $select_num = $request->select_num;
+        }
+        else{
+            $select_num = 3;
+        }
         $ignore_category = $request->ignore_category;
 
         /*
@@ -54,7 +58,9 @@ class menuController extends Controller
         */
         $menus = Category::join('menus',function($join)use($ignore_category){
             $join->on('menus.category_id', '=','categories.id')
-            ->whereNotIn('category_id', $ignore_category);
+            ->when((!is_null($ignore_category)), function($q) use ($ignore_category){
+                $q->whereNotIn('category_id', $ignore_category);
+            });
         })->inRandomOrder()->get()->take($select_num);
 
         return response()-> json($menus);
