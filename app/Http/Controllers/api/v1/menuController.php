@@ -43,4 +43,20 @@ class menuController extends Controller
 
         return response()->json($menus);
     }
+
+    public function lottery(Request $request){
+        
+        $select_num = $request->select_num;
+        $ignore_category = $request->ignore_category;
+
+        /*
+        select_num個のtarget_categoryに合致するレコードをランダムに取得
+        */
+        $menus = Category::join('menus',function($join)use($ignore_category){
+            $join->on('menus.category_id', '=','categories.id')
+            ->whereNotIn('category_id', $ignore_category);
+        })->inRandomOrder()->get()->take($select_num);
+
+        return response()-> json($menus);
+    }
 }
