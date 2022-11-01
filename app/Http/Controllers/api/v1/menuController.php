@@ -41,7 +41,15 @@ class menuController extends Controller
             });
         })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
 
-        return response()->json($menus);
+
+        $total_num = Menu::max('id');
+
+
+        return response()->json([
+            'data' => $menus,
+            //'next_page_id' => $offset+$total_num,
+            'total_num' => $total_num,
+        ]);
     }
 
     public function lottery(Request $request){
