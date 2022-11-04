@@ -21,7 +21,7 @@ class menuController extends Controller
             $offset = (int) $request->offset;
         }
         else{
-            $offset = 1;
+            $offset = 0;
         }
         //文字検索
         if(isset($request->search_text)){
@@ -30,7 +30,9 @@ class menuController extends Controller
         else{
             $search_text = null;
         }
-        $end_id = $offset+$contents_limit;
+        $end_id = $offset+$contents_limit-1;
+        $tmp = Menu::orderBy('id', 'desc')->first()->toArray();
+        $total_num =  $tmp['id'];
         
         $menus = Category::join('menus',function($join)use($offset, $end_id, $search_text, $contents_limit){
             $join->on('menus.category_id', '=','categories.id')
@@ -50,11 +52,15 @@ class menuController extends Controller
             });
         })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
         */
-        $total_num = max(array_column($menus->toArray(), 'id'));
+        if(!is_null($search_text) && $search_text != ''){
+            //$total_num = max(array_column($menus->toArray(), 'id'));
+            $total_num = $menus->count();
+        }
         return response()->json([
             'data' => $menus,
             //'next_page_id' => $offset+$total_num,
             'total_num' => $total_num,
+            'search_txt'=> $search_text,
         ]);
     }
 
