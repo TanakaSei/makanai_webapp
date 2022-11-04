@@ -30,7 +30,7 @@ class menuController extends Controller
         else{
             $search_text = null;
         }
-        $end_id = $offset+$contents_limit-1;
+        $end_id = $offset+$contents_limit;
         
         $menus = Category::join('menus',function($join)use($offset, $end_id, $search_text, $contents_limit){
             $join->on('menus.category_id', '=','categories.id')
@@ -50,15 +50,11 @@ class menuController extends Controller
             });
         })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
         */
-
-        $total_num = Menu::max('id');
-
-
+        $total_num = max(array_column($menus->toArray(), 'id'));
         return response()->json([
             'data' => $menus,
             //'next_page_id' => $offset+$total_num,
             'total_num' => $total_num,
-            'hoge' => $request->search_text,
         ]);
     }
 
