@@ -24,23 +24,32 @@ class menuController extends Controller
             $offset = 1;
         }
         //文字検索
-        if(isset($request->seach_text)){
-            $seach_text = (string)$request->seach_text;
+        if(isset($request->search_text)){
+            $search_text = (string)$request->search_text;
         }
         else{
-            $seach_text = null;
+            $search_text = null;
         }
         $end_id = $offset+$contents_limit-1;
-        $menus = Category::join('menus',function($join)use($offset, $end_id, $seach_text, $contents_limit){
+        
+        $menus = Category::join('menus',function($join)use($offset, $end_id, $search_text, $contents_limit){
             $join->on('menus.category_id', '=','categories.id')
-            ->when((!is_null($seach_text) && $seach_text != ''), function($q) use ($seach_text, $contents_limit){
-                $q->where('menuName', 'like', "%$seach_text%")->orWhere('categoryName', 'like', "%$seach_text%");
-            })
-            ->when((is_null($seach_text) || $seach_text ==''), function($q) use ($offset, $end_id){
+            ->when((!is_null($search_text) && $search_text != ''), function($q) use ($search_text, $contents_limit){
+                $q->where('menuName', 'like', "%$search_text%");
+            }, function($q) use ($offset, $end_id){
                 $q->whereBetween('menus.id', [$offset, $end_id]);        
             });
         })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
-
+        /*
+        $menus = Category::join('menus',function($join)use($offset, $end_id, $search_text, $contents_limit){
+            $join->on('menus.category_id', '=','categories.id')
+            ->when((!is_null($search_text) && $search_text != ''), function($q) use ($search_text, $contents_limit){
+                $q->where('menuName', 'like', "%$search_text%")->orWhere('categoryName', 'like', "%$search_text%");
+            }, function($q) use ($offset, $end_id){
+                $q->whereBetween('menus.id', [$offset, $end_id]);        
+            });
+        })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
+        */
 
         $total_num = Menu::max('id');
 
@@ -49,6 +58,7 @@ class menuController extends Controller
             'data' => $menus,
             //'next_page_id' => $offset+$total_num,
             'total_num' => $total_num,
+            'hoge' => $request->search_text,
         ]);
     }
 
