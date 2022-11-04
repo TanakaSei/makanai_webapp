@@ -30,7 +30,7 @@ class menuController extends Controller
         else{
             $search_text = null;
         }
-        $end_id = $offset+$contents_limit-1;
+        $end_id = $offset+$contents_limit;
         $tmp = Menu::orderBy('id', 'desc')->first()->toArray();
         $total_num =  $tmp['id'];
         
@@ -52,6 +52,8 @@ class menuController extends Controller
             });
         })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
         */
+
+        //文字検索の該当件数 > １ページあたりの表示数の時総数が正しくない
         if(!is_null($search_text) && $search_text != ''){
             //$total_num = max(array_column($menus->toArray(), 'id'));
             $total_num = $menus->count();
