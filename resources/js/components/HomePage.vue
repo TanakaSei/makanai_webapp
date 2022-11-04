@@ -1,17 +1,20 @@
 <template>
     <a-typography-title :level="2">Home Page</a-typography-title>
-    <a-row :gutter="16">
+    <a-row :gutter="50">
         <a-col :span="10">
             <a-card title="メニュー一覧" style="width: 300px">
+                <template #extra>
+                    <div @click='showModal'>
+                        <a href="#">more</a>
+                    </div>
+                </template>
             </a-card>
         </a-col>
         <a-col :span="8">
             <a-card title="最近選んだメニュー" style="width: 300px">
                 <template #extra>
                     <div @click='showModal'>
-                        <a href="#">more
-
-                        </a>
+                        <a href="#">more</a>
                     </div>
                 </template>
                 <p>card content</p>
@@ -28,12 +31,14 @@
 
         <a-row type="flex" justify="space-between" style="margin-top: 20px;">
             <a-col>
-                <a-pagination :current="state.currentPage" :total="state.totalNum" :hideOnSinglePage="true"
-                    @change="changePage()" />
+                <a-pagination :current="state.currentPage" :total="state.totalNum" :pageSize="ROWS_PER_PAGE"
+                    :hideOnSinglePage="true" @change="changePage($event)" />
             </a-col>
             <a-col>
-                <slot name="actionArea"></slot>
+                <a-input-search v-model:value="state.searchText" placeholder="キーワードで検索" enter-button
+                    @search="onSearch(state.searchText, 1)" />
             </a-col>
+
         </a-row>
     </a-modal>
 
@@ -48,23 +53,21 @@ export default defineComponent({
         const visible = ref(false);
 
         const handleOk = e => {
-            console.log("handleOK now");
-            //console.log(e);
             visible.value = false;
         };
         const showModal = () => {
             console.log("showModal now");
-            search(state.seachText);
+            search(state.searchText);
             visible.value = true;
         };
         const state = reactive({
             menus: [1],
-            seachText: '',
+            searchText: '',
             currentPage: 1,
             totalNum: 0,
         });
 
-        const ROWS_PER_PAGE = 5; // 1ページあたりの表示行数
+        const ROWS_PER_PAGE = 10; // 1ページあたりの表示行数
 
         const COLUMS = [{
             title: 'メニュー名', dataIndex: 'menuName', ellipsis: true,
@@ -74,12 +77,12 @@ export default defineComponent({
         ];
 
         const search = (seachText, currentPage = 1) => {
-            let offset = (currentPage - 1) * ROWS_PER_PAGE
+            let offset = (currentPage - 1) * ROWS_PER_PAGE;
             axios.get('api/menus', {
                 params: {
-                    offset: state.offset,
+                    offset: offset,
                     contents_limit: ROWS_PER_PAGE,
-                    seach_text: state.seachText,
+                    seach_text: seachText,
                 },
             })
                 .then(function (response) {
@@ -88,10 +91,15 @@ export default defineComponent({
                     state.totalNum = response.data.total_num;
                     state.currentPage = currentPage;
                 });
-        }
-        search(state.seachText, 1);
+        };
+        search(state.searchText, 1);
         const changePage = (page) => {
-            search(state.seachText, page);
+            search(state.searchText, page);
+        };
+        //直接seachを検索ボックスでは呼び出せなかったのでonSearch経由
+        const onSearch = (searchText, page) => {
+            console.log(searchText);
+            search(searchText, page);
         };
 
         //seach(state.seachText);
@@ -103,6 +111,8 @@ export default defineComponent({
             handleOk,
             visible,
             changePage,
+            ROWS_PER_PAGE,
+            onSearch,
         }
     }
 })
