@@ -49,8 +49,6 @@
 import { defineComponent, reactive, ref } from 'vue';
 import axios from 'axios';
 
-let tmpPage = 1
-let tmpSearchText = ''
 export default defineComponent({
     setup(_props, context) {
         const visible = ref(false);
@@ -70,8 +68,7 @@ export default defineComponent({
             totalNum: 0,
         });
 
-        const ROWS_PER_PAGE = 5; // 1ページあたりの表示行数
-        let lastSearchText = ''; // ページング時はテキストボックスの内容に依らず検索させるため、別に保持させる
+        const ROWS_PER_PAGE = 10; // 1ページあたりの表示行数
         const COLUMS = [{
             title: 'メニュー名', dataIndex: 'menu_name', ellipsis: true,
         }, {
@@ -79,9 +76,9 @@ export default defineComponent({
         },
         ];
 
+        //各ページに必要な分のデータのみ受け取り，クライアント側の負荷を減らしたい
         const search = (searchText, currentPage = 1) => {
             let offset = (currentPage - 1) * ROWS_PER_PAGE;
-            //console.log(offset, currentPage, searchText);
             axios.get('api/menus', {
                 params: {
                     offset: offset,
@@ -90,17 +87,13 @@ export default defineComponent({
                 },
             })
                 .then(function (response) {
-                    //console.log(offset, ROWS_PER_PAGE, searchText);
+                    console.log(searchText);
                     state.menus = response.data.data;
                     state.totalNum = response.data.total_num;
                     state.currentPage = currentPage;
-                    tmpPage = currentPage;
-                    tmpSearchText = searchText;
-                    console.log(response.data);
                     // テキストボックスが変更された状態でページネーションされた場合を考慮し、
                     // 検索処理で使用された条件に上書きしておく
                     state.searchText = searchText;
-                    lastSearchText = searchText;
                 });
         };
 
@@ -114,8 +107,6 @@ export default defineComponent({
             console.log(state.searchText);
             search(state.searchText);
         };
-
-        //seach(state.seachText);
 
         return {
             state,

@@ -95,10 +95,12 @@ class menuController extends Controller
             //Log::debug("tmp_num=".$tmp_num);
             //Log::debug("menus=".$menus);
             //$menusには$menus[id-1]の位置に該当データが保持されている状態
-            $start_num =(int)($menus->pluck('id')->first())-1;
-            //Log::debug("start_num=".$start_num);
-            for($i=$start_num;$i<$start_num+$tmp_num;$i++){
-                $response_menu[] = $menus[$i];
+            //つまり，返すデータのインデックスは0から始まるとは限らず，番号が飛ぶこともあり，vue側で正しく処理できないため
+            //対象のidを全件取得し，foreachでidに対応するカラムを0から始まるarrayに代入していく.
+            $target_ids =($menus->pluck('id'));
+            Log::debug("target_ids=".$target_ids);
+            foreach($target_ids as $target_id){
+                $response_menu[] = $menus[$target_id-1];
             }
         }
         return response()->json([
