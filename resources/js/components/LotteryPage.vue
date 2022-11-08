@@ -22,7 +22,6 @@ export default defineComponent({
         });
 
         const onClick = e => {
-            console.log("clicked")
             lottery();
         };
 
@@ -33,10 +32,10 @@ export default defineComponent({
                     ignore_category: lotteryConfig.ignoreCategories
                 },
             }).then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
                 for (let i = 0; i < lotteryConfig.lotteryNum; i++) {
-                    lotteryResult.resultMenus[i] = response.data[i].menuName;
-                    lotteryResult.resultCategories[i] = response.data[i].categoryName;
+                    lotteryResult.resultMenus[i] = response.data[i].menu_name;
+                    lotteryResult.resultCategories[i] = response.data[i].category_name;
                 }
             });
         }
