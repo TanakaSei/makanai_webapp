@@ -27,7 +27,7 @@ class MenuSeeder extends Seeder
         
         foreach ($memberSplFileObject as $key => $row) {
             DB::table('menus')->insert([
-                'menuName' => trim($row[0]),
+                'menu_name' => trim($row[0]),
                 'category_id' => trim($row[1]),
                 'created_at' => now(),
                 'updated_at' => now(),
