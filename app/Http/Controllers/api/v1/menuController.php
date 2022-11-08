@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Category;
+
+//Log出力
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
+
+
 class menuController extends Controller
 {   
     public function index(Request $request){
@@ -59,10 +65,7 @@ class menuController extends Controller
         ]);
         */
         $menus = Category::join('menus','menus.category_id', '=','categories.id')->orderBy('menus.id','asc')->get();
-        //$huga = Category::with('menus')->get();
-        //$huga = Menu::with('Category')->get();
         $total_num = $menus->count();
-        $hoge = -1;
         $search_text = $request->search_text;
         $contents_limit = $request->contents_limit;
         $offset = $request->offset;
@@ -70,7 +73,7 @@ class menuController extends Controller
         if(!is_null($search_text)){
             $hoge = 0;
             $menus = $menus->filter(function($record) use ($search_text){
-                return strpos($record['menuName'],$search_text) !== false;
+                return strpos($record['menu_name'],$search_text) !== false;
             });
             $total_num = $menus->count();
             
@@ -86,10 +89,18 @@ class menuController extends Controller
         //arrayでなくobjectになるので以下暫定処理
         $tmp_num = $menus->count();
         $response_menu=[];
-        for($i=$offset;$i<$offset+$tmp_num;$i++){
-            $response_menu[] = $menus[$i];
+
+        if($tmp_num >0){
+
+            //Log::debug("tmp_num=".$tmp_num);
+            //Log::debug("menus=".$menus);
+            //$menusには$menus[id-1]の位置に該当データが保持されている状態
+            $start_num =(int)($menus->pluck('id')->first())-1;
+            //Log::debug("start_num=".$start_num);
+            for($i=$start_num;$i<$start_num+$tmp_num;$i++){
+                $response_menu[] = $menus[$i];
+            }
         }
-            
         return response()->json([
             'data'=> $response_menu,
             'total_num' => $total_num,

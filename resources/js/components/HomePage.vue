@@ -27,6 +27,7 @@
     </a-row>
 
     <a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
+
         <a-table :dataSource="state.menus" :columns="COLUMS" :pagination="false" :scroll="{ x: 800 }" />
 
         <a-row type="flex" justify="space-between" style="margin-top: 20px;">
@@ -36,7 +37,7 @@
             </a-col>
             <a-col>
                 <a-input-search v-model:value="state.searchText" placeholder="キーワードで検索" enter-button
-                    @search="onSearch(state.searchText, 1)" />
+                    @search="onSearch()" />
             </a-col>
 
         </a-row>
@@ -48,6 +49,8 @@
 import { defineComponent, reactive, ref } from 'vue';
 import axios from 'axios';
 
+let tmpPage = 1
+let tmpSearchText = ''
 export default defineComponent({
     setup(_props, context) {
         const visible = ref(false);
@@ -61,45 +64,55 @@ export default defineComponent({
             visible.value = true;
         };
         const state = reactive({
-            menus: [1],
+            menus: [],
             searchText: '',
             currentPage: 1,
             totalNum: 0,
         });
 
-        const ROWS_PER_PAGE = 10; // 1ページあたりの表示行数
-
+        const ROWS_PER_PAGE = 5; // 1ページあたりの表示行数
+        let lastSearchText = ''; // ページング時はテキストボックスの内容に依らず検索させるため、別に保持させる
         const COLUMS = [{
-            title: 'メニュー名', dataIndex: 'menuName', ellipsis: true,
+            title: 'メニュー名', dataIndex: 'menu_name', ellipsis: true,
         }, {
-            title: 'カテゴリ名', dataIndex: 'categoryName', ellipsis: true,
+            title: 'カテゴリ名', dataIndex: 'category_name', ellipsis: true,
         },
         ];
 
-        const search = (seachText, currentPage = 1) => {
+        const search = (searchText, currentPage = 1) => {
             let offset = (currentPage - 1) * ROWS_PER_PAGE;
+            //console.log(offset, currentPage, searchText);
             axios.get('api/menus', {
                 params: {
                     offset: offset,
                     contents_limit: ROWS_PER_PAGE,
-                    seach_text: seachText,
+                    search_text: searchText,
                 },
             })
                 .then(function (response) {
-                    console.log(response.data);
+                    //console.log(offset, ROWS_PER_PAGE, searchText);
                     state.menus = response.data.data;
                     state.totalNum = response.data.total_num;
                     state.currentPage = currentPage;
+                    tmpPage = currentPage;
+                    tmpSearchText = searchText;
+                    console.log(response.data);
+                    // テキストボックスが変更された状態でページネーションされた場合を考慮し、
+                    // 検索処理で使用された条件に上書きしておく
+                    state.searchText = searchText;
+                    lastSearchText = searchText;
                 });
         };
-        search(state.searchText, 1);
+
+        //テーブルのページ切り替え時
         const changePage = (page) => {
             search(state.searchText, page);
         };
+
         //直接seachを検索ボックスでは呼び出せなかったのでonSearch経由
-        const onSearch = (searchText, page) => {
-            console.log(searchText);
-            search(searchText, page);
+        const onSearch = () => {
+            console.log(state.searchText);
+            search(state.searchText);
         };
 
         //seach(state.seachText);
