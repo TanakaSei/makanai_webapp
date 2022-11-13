@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +15,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+canResetPassword: Boolean,
+    status: String,
+    canRegister: Boolean,
+*/
 Route::get('/', function () {
-    return view('app');
+    return Inertia::render('Auth/Login',[
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+    ]);
 });
 
-//リロード後アクセスできない問題解決のための仮処置
-Route::get('/', function () {
-    return view('app');
-});
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+
+//以下暫定
 Route::get('/home', function () {
-    return view('app');
+    return Inertia::render('App');
 });
 Route::get('/setting', function () {
     return view('app');
