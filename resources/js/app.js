@@ -4,7 +4,6 @@ import '../css/app.css';
 import router from "./router";
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-import app from './components/App.vue'
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';

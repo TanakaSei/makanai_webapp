@@ -23,9 +23,6 @@ use Inertia\Inertia;
         'phpVersion' => PHP_VERSION,
     ]);
 });
-canResetPassword: Boolean,
-    status: String,
-    canRegister: Boolean,
 */
 Route::get('/', function () {
     return Inertia::render('Auth/Login',[
@@ -33,6 +30,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
     ]);
 });
+//ログイン後のページ:app/Providers/RouteServiceProvider.phpで定義
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -41,13 +39,15 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //以下暫定
-Route::get('/home', function () {
+Route::get('/home', function (){
     return Inertia::render('App');
-});
+})->middleware('auth');//<-ログインユーザーのみのアクセス許可
 Route::get('/setting', function () {
-    return view('app');
-});
+    //return view('app');
+    return Inertia::render('App');
+})->middleware('auth');
 Route::get('/lottery', function () {
-    return view('app');
-});
+    //return view('app');
+    return Inertia::render('App');
+})->middleware('auth');
 //最終的にはここまで必ず削除すること

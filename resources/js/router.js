@@ -6,7 +6,7 @@ import SettingPage from './components/SettingPage.vue';
 import LotteryPage from './components/LotteryPage.vue';
 
 const routes = [
-    { path: '/h', redirect: '/home' },
+    { path: '/', redirect: '/home' },
     { path: "/home", component: HomePage, name: 'home', },
     { path: "/setting", component: SettingPage, name: 'setting', },
     { path: "/lottery", component: LotteryPage, name: 'lottery', },

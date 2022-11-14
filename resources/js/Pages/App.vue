@@ -18,30 +18,48 @@
                             </a-col>
                         </a-row>
                     </a-col>
+                    <a-col>
+                        <a-button type="primary" @click="logout">Primary Button</a-button>
+                    </a-col>
                 </a-row>
             </a-layout-header>
             <router-view></router-view>
         </a-layout>
+
     </AuthenticatedLayout>
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { Link } from '@inertiajs/inertia-vue3'
+
 export default defineComponent({
     setup() {
         const pageList = [
             { name: 'home', content: 'ホーム' },
             { name: 'setting', content: '設定' },
-            { name: 'lottery', content: '抽選' }
+            { name: 'lottery', content: '抽選' },
         ]
         const current = ref([])
         const router = useRouter();
         router.afterEach((to) => {
             current.value[0] = to.name;
         });
+
+        //ログアウト処理
+        const logout = () => {
+            console.log("fdfdf");
+            axios.post('/logout')
+                .then(function () {
+                    window.location.href = '/';
+                });
+        };
+
         return {
             pageList,
             current,
+            logout,
         };
     }
 })
