@@ -19,7 +19,21 @@
                         </a-row>
                     </a-col>
                     <a-col>
-                        <a-button type="primary" @click="logout">Primary Button</a-button>
+                        <a-dropdown>
+                            <a-avatar class="ant-dropdown-link" @click.prevent>
+                                <template #icon>
+                                    <UserOutlined />
+                                </template>
+                                <DownOutlined />
+                            </a-avatar>
+                            <template #overlay>
+                                <a-menu>
+                                    <a-menu-item>
+                                        <a-button type="text" @click="logout">ログアウト</a-button>
+                                    </a-menu-item>
+                                </a-menu>
+                            </template>
+                        </a-dropdown>
                     </a-col>
                 </a-row>
             </a-layout-header>
@@ -31,25 +45,27 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-
-import { Link } from '@inertiajs/inertia-vue3'
+import { UserOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
+    components: {
+        UserOutlined,
+    },
     setup() {
         const pageList = [
             { name: 'home', content: 'ホーム' },
             { name: 'setting', content: '設定' },
             { name: 'lottery', content: '抽選' },
         ]
-        const current = ref([])
+        const current = ref(['home'])
         const router = useRouter();
         router.afterEach((to) => {
             current.value[0] = to.name;
+            console.log("current", current.value[0]);
         });
 
         //ログアウト処理
         const logout = () => {
-            console.log("fdfdf");
             axios.post('/logout')
                 .then(function () {
                     window.location.href = '/';
@@ -60,6 +76,7 @@ export default defineComponent({
             pageList,
             current,
             logout,
+
         };
     }
 })
