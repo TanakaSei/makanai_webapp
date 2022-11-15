@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import App from './components/App.vue';
-import HomePage from './components/HomePage.vue';
-import SettingPage from './components/SettingPage.vue';
-import LotteryPage from './components/LotteryPage.vue';
+import App from './Pages/App.vue';
+import HomePage from './Pages/HomePage.vue';
+import SettingPage from './Pages/SettingPage.vue';
+import LotteryPage from './Pages/LotteryPage.vue';
 
 const routes = [
     { path: '/', redirect: '/home' },
