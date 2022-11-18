@@ -20,12 +20,15 @@
                     </a-col>
                     <a-col>
                         <a-dropdown>
-                            <a-avatar class="ant-dropdown-link" @click.prevent>
-                                <template #icon>
-                                    <UserOutlined />
-                                </template>
-                                <DownOutlined />
-                            </a-avatar>
+                            <div class="ant-dropdown-link" @click.prevent>
+                                <a-avatar>
+                                    <template #icon>
+                                        <UserOutlined />
+                                    </template>
+                                    <DownOutlined />
+                                </a-avatar>
+                                {{ $page.props.auth.user.name }}
+                            </div>
                             <template #overlay>
                                 <a-menu>
                                     <a-menu-item>
@@ -34,6 +37,7 @@
                                 </a-menu>
                             </template>
                         </a-dropdown>
+
                     </a-col>
                 </a-row>
             </a-layout-header>

@@ -1,5 +1,7 @@
 <template>
     <a-typography-title :level="2">Setting Page</a-typography-title>
+    {{ $page.props.auth.user.name }}
+    {{ $page.props.auth.user.id }}
     <div style="margin-left: 16px">
         <a-typography-title :level="3">一般</a-typography-title>
         <a-row>

@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('usedr_category', function (Blueprint $table) {
+        Schema::create('select_num', function (Blueprint $table) {
             $table->id();
             $table->integer("user_id");
-            $table->integer("category_id");
-            $table->boolean("setting_boolean");
+            $table->integer("select_num");
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usedr_category');
+        Schema::dropIfExists('select_num');
     }
 };
