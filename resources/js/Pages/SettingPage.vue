@@ -2,6 +2,7 @@
     <a-typography-title :level="2">Setting Page</a-typography-title>
     {{ $page.props.auth.user.name }}
     {{ $page.props.auth.user.id }}
+    {{ $page.props.auth.user.select_num }}
     <div style="margin-left: 16px">
         <a-typography-title :level="3">一般</a-typography-title>
         <a-row>
@@ -74,6 +75,9 @@ export default defineComponent({
         const showModal = () => {
             console.log("showModal now");
             visible.value = true;
+        };
+        const save_change = () => {
+
         };
         return {
             inputValue,
