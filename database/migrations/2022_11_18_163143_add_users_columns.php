@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('select_num', function (Blueprint $table) {
-            $table->id();
-            $table->integer("user_id");
-            $table->integer("select_num");
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer("select_num")->default(3);
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('select_num');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };
