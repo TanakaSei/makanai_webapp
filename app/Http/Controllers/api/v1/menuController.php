@@ -8,8 +8,9 @@ use App\Models\Menu;
 use App\Models\Category;
 
 //Log出力
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
+
 
 
 class menuController extends Controller
