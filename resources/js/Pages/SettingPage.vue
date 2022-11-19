@@ -1,8 +1,5 @@
 <template>
     <a-typography-title :level="2">Setting Page</a-typography-title>
-    {{ $page.props.auth.user.name }}
-    {{ $page.props.auth.user.id }}
-    {{ $page.props.auth.user.duplication }}
     <div style="margin-left: 16px">
         <a-typography-title :level="3">一般</a-typography-title>
         <a-row>
@@ -46,7 +43,7 @@
                     {{ category_state.category_data[i - 1]["category_name"] }}
                 </a-col>
                 <a-col>
-                    <a-switch v-model:checked="category_status[i]">
+                    <a-switch v-model:checked="category_select_flg[i]">
                         <template #checkedChildren>
                             <check-outlined />
                         </template>
@@ -100,6 +97,7 @@ export default defineComponent({
         //appでのpropsの変更が反映されていないため
         const state = reactive({
             duplication_checked: props.user_status.duplication_flg,
+            category_select_flg: props.category_status.category_select_flg,
         });
 
         const onChange = () => {
@@ -141,8 +139,8 @@ export default defineComponent({
         const category_list = () => {
             console.log("respose data:");
             axios.get('api/setting/list').then(function (response) {
-                console.log(response.data);
                 category_state.category_data = response.data;
+                //console.log(category_state.category_data);
             });
         }
 
