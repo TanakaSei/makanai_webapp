@@ -36,22 +36,33 @@
     <div style="margin-left: 16px">
         <a-typography-title :level="3">詳細設定</a-typography-title>
         <a-row>
-            <a-col :span="3">
+            <a-col :span="6">
                 カテゴリ別の設定
             </a-col>
-            <a-col :span="5">
-                <a-button type="primary" @click="showModal">開く</a-button>
-            </a-col>
+        </a-row>
+        <div v-for="i in category_state.category_data.length">
+            <a-row>
+                <a-col :span="6">
+                    {{ category_state.category_data[i - 1]["category_name"] }}
+                </a-col>
+                <a-col>
+                    <a-switch v-model:checked="category_status[i]">
+                        <template #checkedChildren>
+                            <check-outlined />
+                        </template>
+                        <template #unCheckedChildren>
+                            <close-outlined />
+                        </template>
+                    </a-switch>
+                </a-col>
+            </a-row>
+        </div>
+        <a-row>
             <a-col>
                 <a-button type="primary" @click="save_change()">変更を保存</a-button>
             </a-col>
         </a-row>
     </div>
-
-    <a-modal v-model:visible="visible" title="詳細設定" @ok="handleOk">
-        <a-table :columns="columns" :row-selection="rowSelection" :data-source="category_state.category_data"
-            :pagination="false" />
-    </a-modal>
 
 </template>
 <script>
@@ -62,6 +73,7 @@ import { useRouter } from 'vue-router'
 export default defineComponent({
     props: {
         user_status: { type: Array, required: true },
+        category_status: { type: Array, required: true },
     },
     components: {
         CheckOutlined,
@@ -72,10 +84,6 @@ export default defineComponent({
 
         const visible = ref(false);
 
-        const columns = [{
-            title: "カテゴリー名",
-            dataIndex: 'category_name',
-        }];
         const category_state = reactive({
             selectedRowKeys: [],
             // Check here to configure the default column
@@ -137,9 +145,9 @@ export default defineComponent({
                 category_state.category_data = response.data;
             });
         }
+
         category_list();
         return {
-            columns,
             category_state,
 
             visible,
