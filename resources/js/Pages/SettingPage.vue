@@ -105,7 +105,7 @@ export default defineComponent({
             console.log("sava_change!!", select_num, typeof select_num);
             axios.post('api/setting/save', {
                 params: {
-                    id: user_id,
+                    id: 1,
                     select_num: select_num,
                 },
             })
