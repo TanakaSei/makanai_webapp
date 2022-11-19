@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\User_Category;
+use App\Models\UserCategory;
+use App\Models\Category;
 
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ class SettingController extends Controller
     public function index(Request $request){
         $user_id=(int)$request->params['id'];
 
-        $user_record = User::where('id', $user_id)->first();
+        $user_record = User::where('id', $user_id)->all();
 
     }
     public function store(Request $request){
@@ -41,5 +42,9 @@ class SettingController extends Controller
         else{
             return -1;
         }
+    }
+    public function list(){
+        $categories = Category::select('category_name')->get();
+        return response()->json($categories);
     }
 }

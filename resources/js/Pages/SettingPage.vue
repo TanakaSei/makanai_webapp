@@ -2,7 +2,7 @@
     <a-typography-title :level="2">Setting Page</a-typography-title>
     {{ $page.props.auth.user.name }}
     {{ $page.props.auth.user.id }}
-    {{ $page.props.auth.user.select_num }}
+    {{ $page.props.auth.user.duplication }}
     <div style="margin-left: 16px">
         <a-typography-title :level="3">一般</a-typography-title>
         <a-row>
@@ -48,12 +48,17 @@
         </a-row>
     </div>
 
-    <a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
+    <a-modal v-model:visible="visible" title="詳細設定" @ok="handleOk">
+        <a-table :columns="columns" :row-selection="rowSelection" :data-source="category_state.category_data"
+            :pagination="false" />
     </a-modal>
+
 </template>
 <script>
 import { defineComponent, ref, reactive, toRefs } from 'vue';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router'
 export default defineComponent({
     props: {
         user_status: { type: Array, required: true },
@@ -63,19 +68,34 @@ export default defineComponent({
         CloseOutlined,
     },
     setup(props) {
-        console.log(props.user_status);
+        const router = useRouter()
 
         const visible = ref(false);
+
+        const columns = [{
+            title: "カテゴリー名",
+            dataIndex: 'category_name',
+        }];
+        const category_state = reactive({
+            selectedRowKeys: [],
+            // Check here to configure the default column
+            loading: false,
+            category_data: [],
+        });
+
+
         const handleOk = e => {
             visible.value = false;
         };
 
+        //この方式だと変更して保存後リロードしないと別ページから戻ってきても変更が反映されていない
+        //appでのpropsの変更が反映されていないため
         const state = reactive({
             duplication_checked: props.user_status.duplication_flg,
         });
 
         const onChange = () => {
-            console.log(state.duplication_checked);
+            console.log("onChange", state.duplication_checked);
         };
         const showModal = () => {
             console.log("showModal now");
@@ -88,13 +108,7 @@ export default defineComponent({
                 },
             })
                 .then(function (response) {
-                    console.log(response.data.data);
-                    state.menus = response.data.data;
-                    state.totalNum = response.data.total_num;
-                    state.currentPage = currentPage;
-                    // テキストボックスが変更された状態でページネーションされた場合を考慮し、
-                    // 検索処理で使用された条件に上書きしておく
-                    state.searchText = searchText;
+
                 });
         };
         const save_change = () => {
@@ -110,15 +124,31 @@ export default defineComponent({
                     if (response.data == -1) {
                         console.log("保存に失敗しました");
                     }
+                    else {
+                        //保存後，再読み込み
+                        router.go({ path: '/setting', force: true });
+                    }
                 });
         };
+        const category_list = () => {
+            console.log("respose data:");
+            axios.get('api/setting/list').then(function (response) {
+                console.log(response.data);
+                category_state.category_data = response.data;
+            });
+        }
+        category_list();
         return {
+            columns,
+            category_state,
+
             visible,
             ...toRefs(state),
             onChange,
             showModal,
             handleOk,
             save_change,
+            category_list,
         };
     },
 });

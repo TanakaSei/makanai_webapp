@@ -1,6 +1,7 @@
 <template>
     <AuthenticatedLayout>
         {{ send_user($page.props.auth.user.id, $page.props.auth.user.select_num, $page.props.auth.user.duplication) }}
+
         <a-layout id="app-layout" style="background: #fff;">
             <a-layout-header style="background: #ebc320;">
                 <a-row type=" flex">

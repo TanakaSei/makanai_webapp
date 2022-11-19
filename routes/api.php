@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('menus', [menuController::class, 'index']);
 Route::get('lottery', [menuController::class, 'lottery']);
 Route::post('setting/save', [SettingController::class, 'store']);
+Route::get('setting/list', [SettingController::class, 'list']);
 Route::get('setting', [settingController::class, 'index']);
