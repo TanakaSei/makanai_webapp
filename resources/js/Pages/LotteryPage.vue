@@ -10,7 +10,10 @@ import { defineComponent, reactive, ref } from 'vue';
 import axios from 'axios';
 
 export default defineComponent({
-    setup(_props, context) {
+    props: {
+        user_status: { type: Array, required: true },
+    },
+    setup(props, context) {
         const lotteryResult = reactive({
             resultMenus: [],
             resultCategories: [],
@@ -18,7 +21,7 @@ export default defineComponent({
         const lotteryConfig = reactive({
             ignoreCategories: [],
             ignoreMenus: [],
-            lotteryNum: 3,
+            lotteryNum: props.user_status.select_num,
         });
 
         const onClick = e => {
