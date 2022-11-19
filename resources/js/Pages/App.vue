@@ -1,5 +1,6 @@
 <template>
     <AuthenticatedLayout>
+        {{ send_user($page.props.auth.user.id, $page.props.auth.user.select_num, $page.props.auth.user.duplication) }}
         <a-layout id="app-layout" style="background: #fff;">
             <a-layout-header style="background: #ebc320;">
                 <a-row type=" flex">
@@ -41,21 +42,38 @@
                     </a-col>
                 </a-row>
             </a-layout-header>
-            <router-view></router-view>
+            <router-view :user_status="user_status"></router-view>
         </a-layout>
 
     </AuthenticatedLayout>
 </template>
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { UserOutlined } from '@ant-design/icons-vue';
+import SettingPage from './SettingPage.vue'
 
 export default defineComponent({
     components: {
         UserOutlined,
+        SettingPage
     },
     setup() {
+        const user_status = reactive({
+            user_id: 0,
+            select_num: 3,
+            duplication_flg: false,
+        });
+
+        const send_user = (id, num, duplication) => {
+            user_status.user_id = id;
+            user_status.select_num = num;
+            if (duplication == 0)
+                user_status.duplication_flg = false;
+            else
+                user_status.duplication_flg = true;
+        };
+
         const pageList = [
             { name: 'home', content: 'ホーム' },
             { name: 'setting', content: '設定' },
@@ -80,7 +98,8 @@ export default defineComponent({
             pageList,
             current,
             logout,
-
+            send_user,
+            user_status,
         };
     }
 })

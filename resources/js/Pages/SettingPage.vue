@@ -3,7 +3,6 @@
     {{ $page.props.auth.user.name }}
     {{ $page.props.auth.user.id }}
     {{ $page.props.auth.user.select_num }}
-    {{ send_user($page.props.auth.user.id, $page.props.auth.user.select_num) }}
     <div style="margin-left: 16px">
         <a-typography-title :level="3">一般</a-typography-title>
         <a-row>
@@ -22,7 +21,7 @@
                 重複
             </a-col>
             <a-col>
-                <a-switch v-model:checked="checked1" @change="onChange()">
+                <a-switch v-model:checked="duplication_checked" @change="onChange()">
                     <template #checkedChildren>
                         <check-outlined />
                     </template>
@@ -44,8 +43,7 @@
                 <a-button type="primary" @click="showModal">開く</a-button>
             </a-col>
             <a-col>
-                <a-button type="primary"
-                    @click="save_change($page.props.auth.user.id, $page.props.auth.user.select_num)">変更を保存</a-button>
+                <a-button type="primary" @click="save_change()">変更を保存</a-button>
             </a-col>
         </a-row>
     </div>
@@ -57,17 +55,15 @@
 import { defineComponent, ref, reactive, toRefs } from 'vue';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
+    props: {
+        user_status: { type: Array, required: true },
+    },
     components: {
         CheckOutlined,
         CloseOutlined,
     },
-    setup() {
-        let select_num = 0;
-        let user_id;
-        const send_user = (id, num) => {
-            select_num = num;
-            user_id = id;
-        };
+    setup(props) {
+        console.log(props.user_status);
 
         const visible = ref(false);
         const handleOk = e => {
@@ -75,17 +71,17 @@ export default defineComponent({
         };
 
         const state = reactive({
-            checked1: true,
+            duplication_checked: props.user_status.duplication_flg,
         });
 
         const onChange = () => {
-            console.log(state.checked1);
+            console.log(state.duplication_checked);
         };
         const showModal = () => {
             console.log("showModal now");
             visible.value = true;
         };
-        const setupSettingValue = () => {
+        const setupSettingValue = (user_id) => {
             axios.get('api/setting', {
                 params: {
                     id: 3,
@@ -101,12 +97,13 @@ export default defineComponent({
                     state.searchText = searchText;
                 });
         };
-        const save_change = (user_id, select_num) => {
-            console.log("sava_change!!", select_num, typeof select_num);
+        const save_change = () => {
+            console.log("sava_change!!", props.user_status.select_num);
             axios.post('api/setting/save', {
                 params: {
-                    id: 1,
-                    select_num: select_num,
+                    id: props.user_status.user_id,
+                    select_num: props.user_status.select_num,
+                    duplication_checked: state.duplication_checked,
                 },
             })
                 .then(function (response) {
@@ -116,14 +113,12 @@ export default defineComponent({
                 });
         };
         return {
-            select_num,
             visible,
             ...toRefs(state),
             onChange,
             showModal,
             handleOk,
             save_change,
-            send_user,
         };
     },
 });

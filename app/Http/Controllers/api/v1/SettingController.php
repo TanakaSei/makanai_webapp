@@ -16,6 +16,7 @@ class SettingController extends Controller
 {
     public function index(Request $request){
         $user_id=(int)$request->params['id'];
+
         $user_record = User::where('id', $user_id)->first();
 
     }
@@ -29,9 +30,11 @@ class SettingController extends Controller
         //postの場合のみ？
         $user_id=(int)$request->params['id'];
         $select_num = $request->params['select_num'];
-        if(!is_null($select_num)){
+        $duplication_checked = $request->params['duplication_checked'];
+        if(!is_null($select_num)||!is_null($duplication_checked)){
             $user_record = User::where('id', $user_id)->first();
             $user_record->select_num = $select_num;
+            $user_record->duplication = $duplication_checked;
             $user_record->save();
             return 0;
         }
