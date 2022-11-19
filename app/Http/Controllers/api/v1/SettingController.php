@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Log;
 class SettingController extends Controller
 {
     public function index(Request $request){
+        $user_id=(int)$request->params['id'];
+        $user_record = User::where('id', $user_id)->first();
 
     }
     public function store(Request $request){

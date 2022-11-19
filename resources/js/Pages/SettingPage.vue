@@ -119,7 +119,7 @@ export default defineComponent({
             select_num,
             visible,
             ...toRefs(state),
-            onchange,
+            onChange,
             showModal,
             handleOk,
             save_change,
