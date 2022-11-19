@@ -47,4 +47,9 @@ class SettingController extends Controller
         $categories = Category::select('category_name')->get();
         return response()->json($categories);
     }
+    public function category_value(Request $request){
+        $user_id = $request->id;
+        $category_values = array(false,false,true,false,false,true);
+        return response()->json($category_values);
+    }
 }
