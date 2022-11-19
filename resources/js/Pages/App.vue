@@ -43,7 +43,7 @@
                     </a-col>
                 </a-row>
             </a-layout-header>
-            <router-view :user_status="user_status"></router-view>
+            <router-view :user_status="user_status" :category_status="category_status"></router-view>
         </a-layout>
 
     </AuthenticatedLayout>
@@ -65,10 +65,23 @@ export default defineComponent({
             select_num: 3,
             duplication_flg: false,
         });
+        const category_status = reactive({
+            category_select_flg: [],
+        });
 
         const send_user = (id, num, duplication) => {
             user_status.user_id = id;
             user_status.select_num = num;
+            axios.get('api/setting/ctegory-value', {
+                params: {
+                    id: user_status.user_id,
+                },
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    category_status.category_select_flg = response.data;
+                });
+
             if (duplication == 0)
                 user_status.duplication_flg = false;
             else
@@ -101,6 +114,7 @@ export default defineComponent({
             logout,
             send_user,
             user_status,
+            category_status,
         };
     }
 })
