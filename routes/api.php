@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\api\v1\menuController;
+use App\Http\Controllers\api\v1\SettingController;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('menus', [menuController::class, 'index']);
+Route::get('lottery', [menuController::class, 'lottery']);
+Route::post('setting/save', [SettingController::class, 'store']);
+Route::get('setting', [settingController::class, 'index']);

@@ -1,10 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import AppPage from './components/App.vue';
+import App from './Pages/App.vue';
+import HomePage from './Pages/HomePage.vue';
+import SettingPage from './Pages/SettingPage.vue';
+import LotteryPage from './Pages/LotteryPage.vue';
 
 const routes = [
-    { path: '/', redirect: '/app' },
-    { path: "/app", component: AppPage, name: 'app', },
+    { path: '/', redirect: '/home' },
+    { path: "/home", component: HomePage, name: 'home', },
+    { path: "/setting", component: SettingPage, name: 'setting', },
+    { path: "/lottery", component: LotteryPage, name: 'lottery', },
 ];
 
 const router = createRouter({
