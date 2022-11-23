@@ -41,7 +41,7 @@ public/hotの中身を
 ```http://0.0.0.0:5173``` から ```http://localhost:5173```  
 に書き変える  
 
-## 仕様言語，フレームワーク
+## 使用言語，フレームワーク
 - バックエンド:Laravel9(Laravel Sail)  
 - 認証機能: Laravel Breeze  
 - フロントエンド:Vue.js  
