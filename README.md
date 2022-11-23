@@ -4,13 +4,14 @@
 データベースの正規化を行っていなかったり，ネイティブアプリのためメニューが切り替わってもアプリ側での対応が難しい，Android以外で同等のサービスを提供するには１から開発する必要があるため，平行して開発を行うのは個人では非常に困難である．
 などの問題があったため，メニューなどの情報の編集がしやすく， プラットフォームを問わず利用できるwebアプリでのサービスを提供を目指して開発を始めた．
 
-
-
+###開発状況  
+- 11/24現在，設定の選択数以外の項目とホームの最近選んだメニューカードは機能が未実装のためレイアウトの確認用のダミーです．  
+- 抽選ページは開発中のためレイアウトは仮ののものです．
 ### 環境構築手順
 #### 前提
-WSL2上で動作するLinuxディストリビューションが存在する  
-Docker Desktopがインストールされており，WSL2で利用可能になっている.
-WSL上のLinux系ファイルシステムにアクセス可能な状態のVS Code
+- WSL2上で動作するLinuxディストリビューションが存在する  
+- Docker Desktopがインストールされており，WSL2で利用可能になっている.  
+- WSL上のLinux系ファイルシステムにアクセス可能な状態のVS Code
 
 #### Windowsの場合
 リポジトリをLinuxファイルシステム上にクローンし，ターミナルで以下のコマンドを実行する
@@ -41,11 +42,11 @@ public/hotの中身を
 に書き変える  
 
 ## 仕様言語，フレームワーク
-バックエンド:Laravel9(Laravel Sail)  
-認証機能: Laravel Breeze  
-フロントエンド:Vue.js  
-UIフレームワーク:Ant Design Vue  
+- バックエンド:Laravel9(Laravel Sail)  
+- 認証機能: Laravel Breeze  
+- フロントエンド:Vue.js  
+- UIフレームワーク:Ant Design Vue  
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
