@@ -12,6 +12,7 @@ import axios from 'axios';
 export default defineComponent({
     props: {
         user_status: { type: Array, required: true },
+        category_status: { type: Array, required: true },
     },
     setup(props, context) {
         const lotteryResult = reactive({
@@ -19,7 +20,7 @@ export default defineComponent({
             resultCategories: [],
         });
         const lotteryConfig = reactive({
-            ignoreCategories: [],
+            ignoreCategories: [],//category_statusのflgがfalseの部分のインデックスを取得する
             ignoreMenus: [],
             lotteryNum: props.user_status.select_num,
         });
