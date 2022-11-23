@@ -15,10 +15,10 @@ http://0.0.0.0:5173 から http://localhost:5173
 参考: https://qiita.com/Mi_tsu_ya/items/90129f44a3ee07b8ea57
 
 ## 仕様言語，フレームワーク
-バックエンド:Laravel9(Laravel Sail) 
-認証機能: Laravel Breeze 
-フロントエンド:Vue.js 
-UIフレームワーク:Ant Design Vue 
+バックエンド:Laravel9(Laravel Sail)  
+認証機能: Laravel Breeze  
+フロントエンド:Vue.js  
+UIフレームワーク:Ant Design Vue  
 
 ## License
 
