@@ -16,9 +16,9 @@ http://0.0.0.0:5173 から http://localhost:5173
 
 ## 仕様言語，フレームワーク
 バックエンド:Laravel9(Laravel Sail) 
-認証機能: Laravel Breeze
-フロントエンド:Vue.js
-UIフレームワーク:Ant Design Vue
+認証機能: Laravel Breeze 
+フロントエンド:Vue.js 
+UIフレームワーク:Ant Design Vue 
 
 ## License
 
