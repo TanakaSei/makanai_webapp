@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 
+//追加
+use App\Models\UserCategory;
+use App\Models\Category;
+use Illuminate\Support\Facades\Log;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -45,6 +50,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        
+        $category_ids = Category::select('id')->get()->toArray();
+        foreach ($category_ids as $category_id){
+            $register_setting = UserCategory::create([
+                'user_id'=> $user->id,
+                'category_id'=> $category_id['id'],
+                'setting_boolean' => True,
+            ]);
+        }
 
         event(new Registered($user));
 

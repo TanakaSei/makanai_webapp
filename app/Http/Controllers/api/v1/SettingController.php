@@ -22,6 +22,7 @@ class SettingController extends Controller
 
     }
     public function store(Request $request){
+        
         //$user_id=(int)$request->id;
         //$select_num = $request->select_num;
         //Log::debug("select_num:".$select_num);

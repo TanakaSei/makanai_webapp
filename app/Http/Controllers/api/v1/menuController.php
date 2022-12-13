@@ -16,55 +16,6 @@ use Illuminate\Support\Facades\Route;
 class menuController extends Controller
 {   
     public function index(Request $request){
-        /*
-        //各ページの取得件数の上限を設定
-        if(isset($request->contents_limit)){
-            $contents_limit = (int) $request->contents_limit;
-        }
-        else{
-            $contents_limit = 10; 
-        }
-        //ページごとに必要なレコードを取得したいので開始idを受け取る
-        if(isset($request->offset)){
-            $offset = (int) $request->offset;
-        }
-        else{
-            $offset = 0;
-        }
-        //文字検索
-        if(isset($request->search_text)){
-            $search_text = (string)$request->search_text;
-        }
-        else{
-            $search_text = null;
-        }
-        $end_id = $offset+$contents_limit;
-        $tmp = Menu::orderBy('id', 'desc')->first()->toArray();
-        $total_num =  $tmp['id'];
-        //$total_num =  null;
-        $hoge = -1;
-        $menus = Category::join('menus',function($join)use($offset, $end_id, $search_text, $contents_limit){
-            $join->on('menus.category_id', '=','categories.id')
-            ->when((!is_null($search_text) && $search_text != ''), function($q) use ($search_text, $contents_limit){
-                $q->where('menuName', 'like', "%$search_text%");
-            }, function($q) use ($offset, $end_id){
-                $q->whereBetween('menus.id', [$offset, $end_id]);        
-            });
-        })->orderBy('menus.id', 'asc')->get()->take($contents_limit);
-        
-        
-        //文字検索の該当件数 > １ページあたりの表示数の時総数が正しくない
-        if(!is_null($search_text) && $search_text != ''){
-            //$total_num = max(array_column($menus->toArray(), 'id'));
-            //$total_num = $menus->count();
-        }
-        return response()->json([
-            'data' => $menus,
-            //'next_page_id' => $offset+$total_num,
-            'total_num' => $total_num,
-            'search_txt'=> $search_text,
-        ]);
-        */
         $menus = Category::join('menus','menus.category_id', '=','categories.id')->orderBy('menus.id','asc')->get();
         $total_num = $menus->count();
         $search_text = $request->search_text;
