@@ -66,7 +66,7 @@
 import { defineComponent, ref, reactive, toRefs } from 'vue';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 export default defineComponent({
     props: {
         user_status: { type: Array, required: true },
@@ -87,7 +87,6 @@ export default defineComponent({
             loading: false,
             category_data: [],
         });
-
 
         const handleOk = e => {
             visible.value = false;
@@ -118,7 +117,7 @@ export default defineComponent({
                 });
         };
         const save_change = () => {
-            console.log("sava_change!!", props.user_status.select_num);
+            console.log("save_change!!", props.user_status.select_num);
             axios.post('api/setting/save', {
                 params: {
                     id: props.user_status.user_id,
