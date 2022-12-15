@@ -16,30 +16,39 @@ use Illuminate\Support\Facades\Log;
 class SettingController extends Controller
 {
     public function index(Request $request){
-        $user_id=(int)$request->params['id'];
-        $user_record = User::where('id', $user_id)->all();
+        //Log::debug("user:".$request);
+        $user_id=(int)$request->id;
+        $user_record = UserCategory::where('user_id', '=', $user_id)->get();
+        //Log::debug("user:".$user_record);
+        return response()->json($user_record);
     }
 
     public function store(Request $request){
-        
-        //$user_id=(int)$request->id;
-        //$select_num = $request->select_num;
-        //Log::debug("select_num:".$select_num);
-        //Log::debug("user_id:".$request->params['id']);
-        //Log::debug("request:\n".$request);
-        //以下の方法でないとidとselect_numが取得できない
-        //postの場合のみ？
+       
         $user_id=(int)$request->params['id'];
         $select_num = $request->params['select_num'];
         $duplication_checked = $request->params['duplication_checked'];
-        if(!is_null($select_num)||!is_null($duplication_checked)){
+        $category_state = $request->params['category_state'];
+        try{
             $user_record = User::where('id', $user_id)->first();
             $user_record->select_num = $select_num;
             $user_record->duplication = $duplication_checked;
             $user_record->save();
+
+            $user_category_setting = UserCategory::where('user_id', $user_id)->get();
+            $i = 0;
+            foreach($user_category_setting as $hoge){
+                //Log::debug($hoge);
+                if($category_state[$i] == true){
+                    $hoge->setting_boolean = true;
+                }else{
+                    $hoge->setting_boolean = false;
+                }
+                $hoge->save();
+                $i += 1;
+            }
             return 0;
-        }
-        else{
+        }catch(Throwable $e){
             return -1;
         }
     }
@@ -47,10 +56,20 @@ class SettingController extends Controller
         $categories = Category::select('category_name')->get();
         return response()->json($categories);
     }
-    
+
     public function category_value(Request $request){
-        $user_id = $request->id;
-        $category_values = array(false,false,true,false,false,true);
-        return response()->json($category_values);
+        $user_id=(int)$request->id;
+        $user_record = UserCategory::where('user_id', '=', $user_id)->get();
+        $setting_value = array();
+        foreach($user_record as $data){
+            if($data['setting_boolean'] == 1){
+                $setting_value[] = true;
+            }
+            else{
+                $setting_value[] = false;
+            }
+
+        }
+        return response()->json($setting_value);
     }
 }

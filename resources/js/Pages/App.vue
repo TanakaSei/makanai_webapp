@@ -72,13 +72,13 @@ export default defineComponent({
         const send_user = (id, num, duplication) => {
             user_status.user_id = id;
             user_status.select_num = num;
-            axios.get('api/setting/ctegory-value', {
+            axios.get('api/setting/category-value', {
                 params: {
                     id: user_status.user_id,
                 },
             })
                 .then(function (response) {
-                    console.log(response.data);
+                    console.log("send_user_result", response.data);
                     category_status.category_select_flg = response.data;
                 });
 

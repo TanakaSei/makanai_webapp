@@ -43,7 +43,7 @@
                     {{ category_state.category_data[i - 1]["category_name"] }}
                 </a-col>
                 <a-col>
-                    <a-switch v-model:checked="category_select_flg[i]">
+                    <a-switch v-model:checked="category_select_flg[i - 1]" @change="onSettingChange()">
                         <template #checkedChildren>
                             <check-outlined />
                         </template>
@@ -102,19 +102,12 @@ export default defineComponent({
         const onChange = () => {
             console.log("onChange", state.duplication_checked);
         };
+        const onSettingChange = () => {
+            //props.category_status.category_select_flg
+        };
         const showModal = () => {
             console.log("showModal now");
             visible.value = true;
-        };
-        const setupSettingValue = (user_id) => {
-            axios.get('api/setting', {
-                params: {
-                    id: 3,
-                },
-            })
-                .then(function (response) {
-
-                });
         };
         const save_change = () => {
             console.log("save_change!!", props.user_status.select_num);
@@ -123,6 +116,7 @@ export default defineComponent({
                     id: props.user_status.user_id,
                     select_num: props.user_status.select_num,
                     duplication_checked: state.duplication_checked,
+                    category_state: state.category_select_flg,
                 },
             })
                 .then(function (response) {
@@ -136,14 +130,14 @@ export default defineComponent({
                 });
         };
         const category_list = () => {
-            console.log("respose data:");
             axios.get('api/setting/list').then(function (response) {
                 category_state.category_data = response.data;
-                //console.log(category_state.category_data);
             });
         }
 
         category_list();
+        console.log('category_state', props.category_status.category_select_flg);
+        //setupSettingValue(props.user_status.user_id);
         return {
             category_state,
 
@@ -154,6 +148,7 @@ export default defineComponent({
             handleOk,
             save_change,
             category_list,
+            onSettingChange,
         };
     },
 });
